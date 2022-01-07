@@ -2,11 +2,11 @@
 <robot name="robotiq_85_gripper" xmlns:xacro="http://ros.org/wiki/xacro">
     
     <xacro:arg name="prefix" default="" />
-    <xacro:arg name="use_fake_hardware" default="false" />
+    <xacro:arg name="use_fake_hardware" default="true" />
     <xacro:arg name="fake_sensor_commands" default="false" />
 
     <xacro:include filename="$(find robotiq_85_description)/urdf/robotiq_85_gripper_macro.urdf.xacro" />
-    
+
     <gazebo>
         <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"> 
             <robotNamespace>/</robotNamespace>
@@ -46,5 +46,13 @@
         <origin xyz="0.05 0 0.85" rpy="0 0 0"/>
     </xacro:robotiq_85_gripper>
 
-
+        <!-- ros2 control include -->
+    <xacro:include filename="$(find robotiq_85_description)/urdf/robotiq_85.ros2_control.xacro" />
+    <!-- ros2 control instance -->
+    <xacro:robotiq_85_ros2_control
+      name="Robotiq85HardwareInterface" 
+      prefix="$(arg prefix)"
+      use_fake_hardware="$(arg use_fake_hardware)"
+      fake_sensor_commands="$(arg fake_sensor_commands)">
+    </xacro:robotiq_85_ros2_control>
 </robot>
