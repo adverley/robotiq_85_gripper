@@ -21,7 +21,17 @@
 		</gazebo>
 	</xacro:macro>
 
-	<xacro:macro name="robotiq_85_gripper" params="prefix parent *origin">
+	<xacro:macro name="robotiq_85_gripper" params="prefix parent use_fake_hardware fake_sensor_commands *origin">
+
+	<!-- ros2 control include -->
+    <xacro:include filename="$(find robotiq_85_description)/urdf/robotiq_85.ros2_control.xacro" />
+    <!-- ros2 control instance -->
+    <xacro:robotiq_85_ros2_control
+      name="Robotiq85HardwareInterface" 
+      prefix="${prefix}"
+      use_fake_hardware="${use_fake_hardware}"
+      fake_sensor_commands="${fake_sensor_commands}">
+    </xacro:robotiq_85_ros2_control>
 
 		<joint name="${prefix}robotiq_85_base_joint" type="fixed">
 			<parent link="${parent}"/>
