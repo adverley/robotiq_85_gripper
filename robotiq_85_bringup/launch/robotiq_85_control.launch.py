@@ -2,11 +2,12 @@ import os
 import xacro
 import yaml
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, RegisterEventHandler
 from launch_ros.actions import Node
 from launch.substitutions import Command,FindExecutable, PathJoinSubstitution, LaunchConfiguration
 from launch_ros.substitutions import FindPackageShare
 from ament_index_python.packages import get_package_share_directory
+from launch.event_handlers import OnProcessExit
 
 def generate_launch_description():
 
@@ -65,29 +66,37 @@ def generate_launch_description():
     joint_state_broadcaster_spawner = Node(
     package="controller_manager",
     executable="spawner",
-    arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
+    arguments=["robotiq_85_joint_state_broadcaster", "--controller-manager", "/controller_manager"],
     )
 
-
-    joint_trajectory_controller_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["joint_trajectory_controller", "-c", "/controller_manager", "--stopped"], # not started initially
-    )
 
     foward_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["forward_position_controller", "-c", "/controller_manager"],
+        arguments=["robotiq_85_forward_position_controller", "-c", "/controller_manager"],
     )
 
+    # Delay rviz start after `joint_state_broadcaster`
+    delay_rviz_after_joint_state_broadcaster_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_state_broadcaster_spawner,
+            on_exit=[rviz_node],
+        )
+    )
+
+    # Delay start of robot_controller after `joint_state_broadcaster`
+    delay_robot_controller_spawner_after_joint_state_broadcaster_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_state_broadcaster_spawner,
+            on_exit=[foward_controller_spawner],
+        )
+    )
     nodes_to_start  = [
     control_node,
-    rviz_node, 
     robot_state_pub_node, 
     joint_state_broadcaster_spawner,
-    joint_trajectory_controller_spawner,
-    foward_controller_spawner
+    delay_rviz_after_joint_state_broadcaster_spawner,
+    delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
     ]
     return LaunchDescription(declared_arguments  + nodes_to_start)
 
