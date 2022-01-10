@@ -5,12 +5,12 @@ controller_manager:
       type: joint_state_broadcaster/JointStateBroadcaster
 
     robotiq_85_forward_position_controller:
-      type: forward_command_controller/ForwardCommandController
+      type: position_controllers/GripperActionController
 
 robotiq_85_forward_position_controller:
   ros__parameters:
-    joints:
-      - robotiq_85_left_knuckle_joint
-    interface_name: position
+    joint: robotiq_85_left_knuckle_joint #note how this is singular! Gripper can only deal w/ single DOF 
+    state_interfaces:
+    - position
 
     
