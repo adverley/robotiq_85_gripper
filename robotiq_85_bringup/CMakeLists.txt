@@ -4,7 +4,7 @@ project(robotiq_85_bringup)
 find_package(ament_cmake REQUIRED)
 
 
-install(DIRECTORY config launch
+install(DIRECTORY launch
   DESTINATION share/${PROJECT_NAME}
 )
 

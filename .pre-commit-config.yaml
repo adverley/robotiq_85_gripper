@@ -1,0 +1,68 @@
+# To use:
+#
+#     pre-commit run -a
+#
+# Or:
+#
+#     pre-commit install  # (runs every time you commit in git)
+#
+# To update this file:
+#
+#     pre-commit autoupdate
+#
+# See https://github.com/pre-commit/pre-commit
+
+repos:
+  # Standard hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-docstring-first
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-xml
+      #- id: check-yaml
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+
+  # Python hooks
+  -   repo: https://github.com/myint/autoflake
+      rev: v1.4
+      hooks:
+      -   id: autoflake
+          name: autoflake - remove unused imports and variables
+          entry: autoflake --remove-all-unused-imports --recursive --remove-unused-variables --in-place --ignore-init-module-imports
+          files: \.py$
+  -   repo: https://github.com/PyCQA/isort
+      rev: 5.10.0
+      hooks:
+      -   id: isort
+          name: isort - sort imports
+          entry: isort --profile black --line-length 119
+          files: \.py$
+  -   repo: https://github.com/psf/black
+      rev: 21.10b0
+      hooks:
+      -   id: black
+          name: black - python code formatter
+          entry: black --line-length 119
+          files: \.py$
+  - repo: https://github.com/pycqa/flake8
+    rev: 3.9.0
+    hooks:
+    - id: flake8
+      args: ["--ignore=E501"]
+
+  # Spellcheck in comments and docs
+  # skipping of *.svg files is not working...
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.0.0
+    hooks:
+      - id: codespell
+        args: ['--write-changes']
+        exclude: \.(svg|pyc)$
