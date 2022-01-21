@@ -28,6 +28,7 @@ setup(
             'single_robotiq_85_action_server = robotiq_85_driver.single_robotiq_85_action_server:main',
             'robotiq_85_test = robotiq_85_driver.robotiq_85_test:main',
             'robotiq_85_test_close = robotiq_85_driver.robotiq_85_test_close:main',
+            'robotiq_85_fake_action_server = robotiq_85_driver.fake_robotiq_85_action_server:main'
         ],
     },
 )
