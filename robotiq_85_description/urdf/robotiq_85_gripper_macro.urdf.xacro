@@ -30,16 +30,6 @@
 		</joint>
 
 		<link name="${prefix}robotiq_85_base_link">
-			<!-- Visual aid for grasping -->
-			<visual>
-				<origin xyz="0.16 0 0" rpy="0 0 0" />
-				<geometry>
-					<sphere radius="0.007"/>
-				</geometry>
-				<material name="">
-					<color rgba="0 1.0 0 1.0"/>
-				</material>
-			</visual>
 			<!-- Gripper body -->
 			<visual>
 				<geometry>
@@ -59,6 +49,41 @@
 					izx = "0.000000" izy = "0.000000" izz = "0.001171" />
 			</inertial>
 		</link>
+
+		<!-- 2 visual links to create frames for tip of the gripper and the center grasp point.-->
+		<joint name="${prefix}robotiq_85_grasp_center_joint" type="fixed">
+			<parent link="${prefix}robotiq_85_base_link"/>
+			<child link="${prefix}robotiq_85_grasp_center"/>
+			<axis xyz="0 0 1"/>
+		</joint>
+		<link name="${prefix}robotiq_85_grasp_center">
+			<visual>
+				<origin xyz="0.145 0 0" rpy="0 0 0" />
+				<geometry>
+					<sphere radius="0.005"/>
+				</geometry>
+				<material name="">
+					<color rgba="0 0.0 1.0 1.0"/>
+				</material>
+			</visual>
+		</link>
+		<joint name="${prefix}robotiq_85_grasp_tip_joint" type="fixed">
+			<parent link="${prefix}robotiq_85_grasp_center"/>
+			<child link="${prefix}robotiq_85_grasp_tip"/>
+			<axis xyz="0 0 1"/>
+		</joint>
+		<link name="${prefix}robotiq_85_grasp_tip">
+			<visual>
+				<origin xyz="0.16 0 0" rpy="0 0 0" />
+				<geometry>
+					<sphere radius="0.005"/>
+				</geometry>
+				<material name="">
+					<color rgba="0 1.0 0 1.0"/>
+				</material>
+			</visual>
+		</link>
+
 
 		<joint name="${prefix}robotiq_85_left_knuckle_joint" type="revolute">
 			<parent link="${prefix}robotiq_85_base_link"/>
