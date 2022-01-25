@@ -50,15 +50,16 @@
 			</inertial>
 		</link>
 
-		<!-- 2 visual links to create frames for tip of the gripper and the center grasp point.-->
+		<!-- 2 visual links to create frames for tip of the gripper and the center grasp point. Frames oriented like tool0.-->
 		<joint name="${prefix}robotiq_85_grasp_center_joint" type="fixed">
 			<parent link="${prefix}robotiq_85_base_link"/>
 			<child link="${prefix}robotiq_85_grasp_center"/>
 			<axis xyz="0 0 1"/>
+			<origin xyz="0.145 0 0" rpy="${pi/2.0} 0 ${pi/2.0}" />
+
 		</joint>
 		<link name="${prefix}robotiq_85_grasp_center">
 			<visual>
-				<origin xyz="0.145 0 0" rpy="0 0 0" />
 				<geometry>
 					<sphere radius="0.005"/>
 				</geometry>
@@ -71,10 +72,11 @@
 			<parent link="${prefix}robotiq_85_grasp_center"/>
 			<child link="${prefix}robotiq_85_grasp_tip"/>
 			<axis xyz="0 0 1"/>
+			<origin xyz="0 0 0.015" rpy="0 0 0" />
+
 		</joint>
 		<link name="${prefix}robotiq_85_grasp_tip">
 			<visual>
-				<origin xyz="0.16 0 0" rpy="0 0 0" />
 				<geometry>
 					<sphere radius="0.005"/>
 				</geometry>
