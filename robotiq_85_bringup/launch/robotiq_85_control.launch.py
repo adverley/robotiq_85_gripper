@@ -4,6 +4,7 @@ from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+from launch.actions import OpaqueFunction
 
 
 def generate_launch_description():
@@ -22,6 +23,10 @@ def generate_launch_description():
             description="Prefix of the joint_names, if changed also change the controller configuration.",
         )
     )
+    
+    return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])
+    
+def launch_setup(context, *args, **kwargs):
 
     prefix = LaunchConfiguration("prefix")
     use_fake_controller = LaunchConfiguration("use_fake_controller")
@@ -72,4 +77,4 @@ def generate_launch_description():
 
     nodes_to_start = [robot_state_pub_node, fake_gripper_controller_node, gripper_controller_node, gripper_driver_node]
 
-    return LaunchDescription(declared_arguments + nodes_to_start)
+    return nodes_to_start
